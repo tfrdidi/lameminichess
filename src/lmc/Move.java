@@ -14,6 +14,10 @@ public class Move {
 		
 		from = new Square(input[0]);
 		to = new Square(input[1]);
+		
+		// TODO: out-of-bounds-tests
+		// TODO: keine figur auf from -> exception
+		// TODO: Valid moves? Can the king step 2 squares?
 	}
 	
 	
