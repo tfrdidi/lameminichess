@@ -1,0 +1,27 @@
+extern:
+
+
+(column)
+
+6	k q b n r
+5	p p p p p
+4	. . . . .
+3	. . . . .
+2	P P P P P
+1	R N B Q K
+
+	a b c d e (row)
+
+
+
+
+intern:
+
+5	k q b n r
+4	p p p p p
+3	. . . . .
+2	. . . . .
+1	P P P P P
+0	R N B Q K
+
+	0 1 2 3 4
