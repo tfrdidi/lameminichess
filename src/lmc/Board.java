@@ -9,7 +9,6 @@ import java.lang.reflect.Array;
 
 /**
  * @author sli
- *
  */
 public class Board {
 
@@ -69,7 +68,6 @@ public class Board {
 		
 		//read board state
 		char currchar =' ';
-		
 		for (int iRow = 1; iRow < 7; iRow++) {
 			if (lines[iRow].length() < 5){
 				throw new Exception("bad Board Format - number of columns is false in row " + iRow);
