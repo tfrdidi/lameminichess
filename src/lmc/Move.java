@@ -19,12 +19,15 @@ public class Move {
 		// TODO: keine figur auf from -> exception
 		// TODO: Valid moves? Can the king step 2 squares?
 	}
-	
-	
-	
 
-	public Move(int row, int column){
-		
+	public Move(Square from, Square to){
+		this.from = from;
+		this.to = to;
 	}
-
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return from + "-" + to;
+	}
 }

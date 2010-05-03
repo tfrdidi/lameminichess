@@ -14,12 +14,12 @@ public class Board {
 
 	public Board() throws Exception{
 		initBoard("1 W\n"
-				+"kqbnr\n"
-				+"ppppp\n"
-				+".....\n"
-				+".....\n"
-				+"PPPPP\n"
-				+"RNBQK\n");
+		        +"kqbnr\n"
+		        +"ppppp\n"
+		        +".....\n"
+		        +".....\n"
+		        +"PPPPP\n"
+		        +"RNBQK\n");
 	}
 	
 	public Board(String str) throws Exception{
@@ -79,7 +79,7 @@ public class Board {
 				{
 					throw new Exception("bad Board Format - '" + currchar + "' is not a valid character");
 				}
-				board[iRow - 1][iColumn] = currchar;
+				board[6 - iRow][iColumn] = currchar;
 			}
 		}
 		
@@ -95,7 +95,7 @@ public class Board {
 		String ret = runCount + " " + currentPlayer + "\n";
 
 		
-		for (int iRow = 0; iRow < board.length; iRow++) {
+		for (int iRow = board.length - 1; iRow >= 0; iRow--) {
 			for (int iCol = 0; iCol < board[iRow].length; iCol++) {
 				ret += board[iRow][iCol];
 			}
@@ -127,28 +127,69 @@ public class Board {
 		fos.flush();
 		fos.close();
 	}
+
+	private char getSquare(Square location){
+		return board[location.getRow()][location.getColumn()];
+	}
+	
+	private void setSquare(Square location, char piece){
+		 board[location.getRow()][location.getColumn()] = piece;
+	}
+	
+	public void move(Move move){
+		char currPiece = getSquare(move.from);
+		setSquare(move.from, '.');
+		setSquare(move.to, currPiece);
+	}
 	
 	public static void main(String args[]){
-		try {
-			
-			Board b = new Board("1 W\n"
-					+"kqnbr\n"
-					+"ppppp\n"
-					+".....\n"
-					+".....\n"
-					+"PPPPP\n"
-					+"RNBQK");
-			System.out.print(b);
-
-			Board.toFile(b, args[0]);
-		} catch (Exception e) {
-			System.out.println("Error while writing!!!");
-			e.printStackTrace();
-			
-		}
-		File f = new File("out.txt");
-		if (f.exists()){
-			System.out.println(f.getAbsolutePath());
-		}
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		boolean exit = false;
+		
+		try{
+			Board b = new Board();
+			System.out.println(b);
+			System.out.println("Please input your move or x to exit");
+			do {
+				String input = br.readLine();
+				if (input.equals("x")){
+					exit = true;
+				}
+				else
+				{
+					Move move = new Move(input); 
+					b.move(move);
+					System.out.println(move);
+					System.out.print(b);
+				}
+				
+			} while (!exit);
+		}catch(Exception e){
+			System.out.println(e);
+		} 
+		
+//		try {
+//			
+//			Board b = new Board("1 W\n"
+//					+"kqnbr\n"
+//					+"ppppp\n"
+//					+".....\n"
+//					+".....\n"
+//					+"PPPPP\n"
+//					+"RNBQK");
+//			System.out.print(b);
+//
+//			Board.toFile(b, args[0]);
+//		} catch (Exception e) {
+//			System.out.println("Error while writing!!!");
+//			e.printStackTrace();
+//			
+//		}
+//		File f = new File("out.txt");
+//		if (f.exists()){
+//			System.out.println(f.getAbsolutePath());
+//		}
 	}
 }

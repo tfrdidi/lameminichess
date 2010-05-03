@@ -8,10 +8,7 @@ public class Square {
 	/*
 	 * parameters are zero based
 	 */
-	public Square(int row, int column) throws Exception{
-		/*
-		 * [row][column]
-		 */
+	public Square(int column, int row) throws Exception{
 		this.row = row;
 		this.column = column;
 		ValidateRowCols();
@@ -46,4 +43,11 @@ public class Square {
 	}
 	private int row;
 	private int column;
+	
+	@Override
+	public String toString() {
+		char cchar = (char) ('a' + column);
+		int irow = row +1;
+		return "" + cchar + irow;
+	}
 }
