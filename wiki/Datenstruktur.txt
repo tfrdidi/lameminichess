@@ -1,5 +1,6 @@
 extern:
-so ein blöder mist
+nö
+
 
 (column)
 
