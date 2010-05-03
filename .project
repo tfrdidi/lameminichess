@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>out.txt</name>
+			<type>1</type>
+			<location>C:/Users/sli/Documents/Schule/Studium/Semester 4/FWPF MiniChess/Workspace/lameminichess/out.txt</location>
+		</link>
+	</linkedResources>
 </projectDescription>
