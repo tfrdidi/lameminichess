@@ -64,15 +64,30 @@ public class Board {
 		initBoard(all);
 	}
 	
+	
+	
+	
 	/*
 	 * [row][column]
 	 */
 	private char[][] board;
 	
-	private static String validBoardCharacters = ".PRNBQKprnbqk";
+	private final static String VALID_SQUARE_CHARACTERS = ".PRNBQKprnbqk";
+	public final static char EMPTY_SQUARE_CHARACTER = '.';
+	
+
 	
 	private int runCount;
 	private char currentPlayer;
+	
+	
+	public int getRunCount() {
+		return runCount;
+	}
+
+	public char getCurrentPlayer() {
+		return currentPlayer;
+	}
 	
 	/**
      * Initializes the <code>Board</code>.
@@ -94,6 +109,8 @@ public class Board {
 		String[] lineOne = lines[0].split(" ");
 		runCount = Integer.parseInt(lineOne[0]);
 		currentPlayer = lineOne[1].charAt(0);
+		if (currentPlayer == 'w') currentPlayer = 'W';
+		else if (currentPlayer == 'b') currentPlayer = 'B';
 		
 		
 		//read board state
@@ -120,10 +137,46 @@ public class Board {
      * 
      * @param currchar A character to test
      */
-	private boolean isBoardCharValid(char currchar) {		
-		return validBoardCharacters.contains(new String(new char[]{currchar}));		
+	private static boolean isBoardCharValid(char currchar) {		
+		return VALID_SQUARE_CHARACTERS.contains(new String(new char[]{currchar}));		
 	}
 
+	/**
+     * Returns the value of a <code>Square</code>.
+     * 
+     * @param		location	Value of this <code>Square</code> will be returned
+     */
+	public char getSquare(Square location) {
+		return board[location.getRow()][location.getColumn()];
+	}
+	
+	/**
+     * Sets the value of a <code>Square</code>.
+     * 
+     * @param		location	Value of this <code>Square</code> will be set
+     * @param		piece		New value of the <code>Square</code>
+     */
+	public void setSquare(Square location, char piece) {
+		 board[location.getRow()][location.getColumn()] = piece;
+	}
+	
+	public int getSquareAssignment(Square square){
+		char piece = getSquare(square);
+		if (piece == EMPTY_SQUARE_CHARACTER)
+			return Square.EMPTY;
+		
+		
+		if ((piece > 'a' && piece < 'z' && currentPlayer == 'W') 
+				||(piece > 'A' && piece < 'Z' && currentPlayer == 'B')
+				){
+			return Square.OPPONENT;
+		} 
+		else {
+			return Square.MATE;
+		}
+	}
+	
+	
 	/**
      * Returns a <code>String</code> representing the actual board state.
      */
@@ -152,6 +205,9 @@ public class Board {
 		ow.write(this.toString());
 		ow.flush();
 	}
+	
+	
+	
 	
 	/**
      * Returns a <code>Board</code> representing the actual board state from a file.
@@ -183,63 +239,15 @@ public class Board {
 		fos.close();
 	}
 
-	/**
-     * Returns the value of a <code>Square</code>.
-     * 
-     * @param		location	Value of this <code>Square</code> will be returned
-     */
-	private char getSquare(Square location) {
-		return board[location.getRow()][location.getColumn()];
+	public void changePlayer() {
+		if (currentPlayer == 'B'){
+			currentPlayer = 'W';
+			runCount++;
+		}
+		else {
+			currentPlayer = 'B';
+		}
 	}
+
 	
-	/**
-     * Sets the value of a <code>Square</code>.
-     * 
-     * @param		location	Value of this <code>Square</code> will be set
-     * @param		piece		New value of the <code>Square</code>
-     */
-	private void setSquare(Square location, char piece) {
-		 board[location.getRow()][location.getColumn()] = piece;
-	}
-	
-	/**
-     * Processes a move on the board.
-     * 
-     * @param		move		The <code>Move</code> to do
-     */
-	public void move(Move move) {
-		char currPiece = getSquare(move.from);
-		setSquare(move.from, '.');
-		setSquare(move.to, currPiece);
-	}
-	
-	
-	public static void main(String args[]) {
-		
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
-		boolean exit = false;
-		
-		try{
-			Board b = new Board();
-			System.out.println(b);
-			System.out.println("Please input your move or x to exit");
-			do {
-				String input = br.readLine();
-				if (input.equals("x")){
-					exit = true;
-				}
-				else
-				{
-					Move move = new Move(input); 
-					b.move(move);
-					System.out.println(move);
-					System.out.print(b);
-				}
-				
-			} while (!exit);
-		}catch(Exception e){
-			System.out.println(e);
-		} 
-	}
 }

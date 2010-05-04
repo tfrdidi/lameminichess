@@ -6,6 +6,14 @@ package lmc;
 public class Move {
 	
 	Square from;
+	public Square getFrom() {
+		return from;
+	}
+
+	public Square getTo() {
+		return to;
+	}
+
 	Square to;
 	
 	public Move(String str) throws Exception {
@@ -32,5 +40,11 @@ public class Move {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return from + "-" + to;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Move other = (Move) obj;
+		return other.toString().equals(this.toString());
 	}
 }

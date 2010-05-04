@@ -6,15 +6,21 @@ package lmc;
 /*
  * row and column fields are zero based
  */
-public class Square {
+public class Square implements Cloneable {
 
+	public static final int EMPTY = 0;
+	public static final int MATE = 1;
+	public static final int OPPONENT = 2;
+	
 	/*
 	 * parameters are zero based
 	 */
 	public Square(int column, int row) throws Exception{
 		this.row = row;
 		this.column = column;
-		ValidateRowCols();
+		if (!ValidateRowCols()) {
+			throw new Exception("Illegal value for rows and/or columns. Bäh!");
+		}
 	}
 
 
@@ -29,13 +35,14 @@ public class Square {
 		char rowStr = string.charAt(0);
 		column = rowStr-'a';
 		row = Integer.parseInt("" + string.charAt(1)) -1;
-		ValidateRowCols();
-	}
-
-	private void ValidateRowCols() throws Exception {
-		if(row < 0 || row > 5 || column < 0 || column > 4) {
+		if (!ValidateRowCols()) {
 			throw new Exception("Illegal value for rows and/or columns. Bäh!");
 		}
+	}
+
+	private boolean ValidateRowCols() {
+		return ((row >= 0 && row <= 5) 
+				&& (column >= 0 && column <= 4));
 	}
 	
 	public int getRow() {
@@ -53,4 +60,21 @@ public class Square {
 		int irow = row +1;
 		return "" + cchar + irow;
 	}
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		try {
+			return new Square(column, row);
+		} catch (Exception e) {
+			throw new CloneNotSupportedException();
+		}
+	}
+
+
+	public boolean changePosition(int x, int y) {
+		column += x;
+		row += y;
+		return ValidateRowCols();
+	}
+
 }
