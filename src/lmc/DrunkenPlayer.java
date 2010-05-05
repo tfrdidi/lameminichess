@@ -2,9 +2,9 @@ package lmc;
 
 import java.util.*;
 
-public class RandomPlayer implements IPlayer {
+public class DrunkenPlayer implements IPlayer {
 
-	public RandomPlayer(){
+	public DrunkenPlayer(){
 	}
 	
 	static Random rnd = new Random();

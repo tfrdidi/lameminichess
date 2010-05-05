@@ -18,7 +18,7 @@ public class Program {
 		try{
 			Board b = new Board();
 			Controller ctrl = new Controller();
-			IPlayer whitePlayer = new RandomPlayer();
+			IPlayer whitePlayer = new DrunkenPlayer();
 			IPlayer blackPlayer = new HumanPlayer();
 			IPlayer currentPlayer = null;
 			char result = '?';
