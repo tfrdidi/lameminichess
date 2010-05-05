@@ -60,14 +60,9 @@ public class Controller {
 	
 	public ArrayList<Move> collectAllMoves(Board board) throws Exception{
 		ArrayList<Move> moveList = new ArrayList<Move>(); 
-		Square from;
-		for (int x = 0; x < 5; x++) {
-			for (int y = 0; y < 6; y++) {
-				from = new Square(x, y);
-				if (board.getSquareAssignment(from) == Square.MATE){
-					addPossibleMoves(board, moveList, from);
-				}
-			}
+
+		for (Square sq : board.getSquares(Square.MATE)) {
+			addPossibleMoves(board, moveList, sq);
 		}
 		
 		return moveList;
@@ -190,4 +185,49 @@ public class Controller {
 		}
 	}
 	
+	protected int getScore(Square sq, Board board){
+		int result = 0;
+		
+		char piece = board.getSquare(sq);
+		
+		switch (Character.toLowerCase(piece)) {
+		case 'k':
+			result = 1000;
+			break;
+		case 'q':
+			result = 10;
+			break;
+		case 'b':
+			result = 3;
+			break;
+		case 'n':
+			result = 3;
+			break;
+		case 'r':
+			result = 5;
+			break;
+		case 'p':
+			result = 1;
+			break;
+		default: //case '.'
+			break;
+		}
+		
+		return result;
+		
+	}
+	
+	protected int getBoardScore(Board board, int param) throws Exception {
+		int result = 0;
+	
+		for (Square sq : board.getSquares(param)) {
+			result += getScore(sq, board);
+		}
+		
+		return result;
+	}
+	
+	protected int getBoardScore(Board board) throws Exception {
+		return getBoardScore(board, Square.MATE)-getBoardScore(board, Square.OPPONENT);
+	}
 }

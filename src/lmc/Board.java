@@ -4,6 +4,7 @@
 package lmc;
 
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  * The class <code>Board</code> represents a 5x6 mini chess board 
@@ -16,7 +17,7 @@ import java.io.*;
  * @version 0.1 2010/05/03
  * @since 0.1
  */
-public class Board {
+public class Board implements Cloneable {
 
     /**
      * Constructs a new mini chess board with default start configuration.
@@ -70,7 +71,7 @@ public class Board {
 	/*
 	 * [row][column]
 	 */
-	private char[][] board;
+	private char[][] board = new char[6][5];
 	
 	private final static String VALID_SQUARE_CHARACTERS = ".PRNBQKprnbqk";
 	public final static char EMPTY_SQUARE_CHARACTER = '.';
@@ -97,8 +98,6 @@ public class Board {
      * @exception  Exception  If initState is malformed
      */
 	private void initBoard(String initState) throws Exception{
-		board = new char[6][5];
-		
 		String[] lines = initState.split("\n");
 		
 		if (lines.length != 7){
@@ -108,9 +107,7 @@ public class Board {
 		//read game state
 		String[] lineOne = lines[0].split(" ");
 		runCount = Integer.parseInt(lineOne[0]);
-		currentPlayer = lineOne[1].charAt(0);
-		if (currentPlayer == 'w') currentPlayer = 'W';
-		else if (currentPlayer == 'b') currentPlayer = 'B';
+		currentPlayer = Character.toUpperCase(lineOne[1].charAt(0));
 		
 		
 		//read board state
@@ -137,8 +134,8 @@ public class Board {
      * 
      * @param currchar A character to test
      */
-	private static boolean isBoardCharValid(char currchar) {		
-		return VALID_SQUARE_CHARACTERS.contains(new String(new char[]{currchar}));		
+	private static boolean isBoardCharValid(char currchar) {
+		return VALID_SQUARE_CHARACTERS.contains(Character.toString(currchar));		
 	}
 
 	/**
@@ -248,6 +245,39 @@ public class Board {
 			currentPlayer = 'B';
 		}
 	}
+	
+	public ArrayList<Square> getSquares(int param) throws Exception {
+		ArrayList<Square> squareList = new ArrayList<Square>();
+		Square sq;
+		
+		for (int x = 0; x < 5; x++) {
+			for (int y = 0; y < 6; y++) {
+				sq = new Square(x, y);
+				if (param == Square.ALL || getSquareAssignment(sq) == param){
+					squareList.add(sq);
+				}
+			}
+		}
+		
+		return squareList;
+	}
+	
+	private Board(Board b) {
+		
+		for (int x = 0; x < 5; x++) {
+			for (int y = 0; y < 6; y++) {
+				this.board[y][x] = b.board[y][x];
+			}
+		}
+		this.currentPlayer = b.currentPlayer;
+		this.runCount = b.runCount;
+	}
+	
+	@Override //Very performant. Whooha! :D
+	public Object clone() throws CloneNotSupportedException {
+			return new Board(this);
+	}
+	
 
 	
 }

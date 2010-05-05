@@ -187,4 +187,57 @@ public class BoardTests extends TestCase {
 
 		}
 	}
+	
+	@Test
+	public void testClone(){
+		try {
+			Board a = new Board();
+			Board b = (Board) a.clone();
+			
+			assertEquals("Clone is mist", a.toString(), b.toString());
+			
+			a.setSquare(new Square("a1"), '.');
+			assertFalse("Clone is mist", a.toString().equals(b.toString()));
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testSquareAssignments(){
+		try {
+			int assignment;
+			Board a = new Board();
+			
+			assignment = a.getSquareAssignment(new Square("a1"));
+			assertEquals("#1 false assignment",Square.MATE,assignment);
+			assignment = a.getSquareAssignment(new Square("a6"));
+			assertEquals("#1 false assignment",Square.OPPONENT,assignment);
+			assignment = a.getSquareAssignment(new Square("c3"));
+			assertEquals("#1 false assignment",Square.EMPTY,assignment);
+
+			
+			a = new Board("1 B\n"
+			        +"kqbnr\n"
+			        +"ppppp\n"
+			        +".....\n"
+			        +".....\n"
+			        +"PPPPP\n"
+			        +"RNBQK\n");
+			
+			assignment = a.getSquareAssignment(new Square("a1"));
+			assertEquals("#1 false assignment",Square.OPPONENT,assignment);
+			assignment = a.getSquareAssignment(new Square("a6"));
+			assertEquals("#1 false assignment",Square.MATE,assignment);
+			assignment = a.getSquareAssignment(new Square("c3"));
+			assertEquals("#1 false assignment",Square.EMPTY,assignment);
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
