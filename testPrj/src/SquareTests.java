@@ -51,4 +51,17 @@ public class SquareTests {
 		}
 	}
 	
+	@Test
+	public void testSquareClone(){
+		try {
+			Square sq = new Square("b2");
+			Square clone = (Square) sq.clone();
+			assertEquals("b2", clone.toString());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 }
