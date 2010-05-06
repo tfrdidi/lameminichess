@@ -19,7 +19,7 @@ public class Program {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		boolean showIngameInfo = true;
 		boolean stopAfterEachTurn = false;
-		int battles = 1;
+		int battles = 10;
 		long now = System.currentTimeMillis();
 		int countWinWhite = 0;
 		int countWinBlack = 0;
