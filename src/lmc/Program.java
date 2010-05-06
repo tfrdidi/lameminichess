@@ -3,6 +3,9 @@
  */
 package lmc;
 
+import java.io.BufferedReader;
+import java.io.Console;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Program {
@@ -13,7 +16,9 @@ public class Program {
 	 */
 	public static void main(String[] args) {
 
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		boolean showIngameInfo = true;
+		boolean stopAfterEachTurn = false;
 		int battles = 1;
 		long now = System.currentTimeMillis();
 		int countWinWhite = 0;
@@ -23,17 +28,18 @@ public class Program {
 		
 		for (int i = 0; i < battles; i++) {
 			try {
-				Board b = new Board(
-"1 B\n"+
-"k.K..\n"+
-".....\n"+
-".....\n"+
-".....\n"+
-".....\n"+
-".....");
+				Board b = new Board();
+//				Board b = new Board(
+//"1 B\n"+
+//"kpp..\n"+
+//"ppp..\n"+
+//".....\n"+
+//"PPPPP\n"+
+//".....\n"+
+//"....K");
 				Controller ctrl = new Controller();
-				IPlayer blackPlayer = new NegamaxPlayer(4);
-				IPlayer whitePlayer = new NotSoDrunkenPlayer();
+				IPlayer blackPlayer = new NegamaxPlayer(3);
+				IPlayer whitePlayer = new NegamaxPlayer(3);
 				IPlayer currentPlayer = null;
 				char result = '?';
 				Move currentMove = null;
@@ -60,6 +66,13 @@ public class Program {
 						System.out.println(b.getCurrentPlayer() + " moved " + currentMove);
 
 					result = ctrl.move(b, currentMove);
+					
+					if(stopAfterEachTurn) {
+						if(b.getCurrentPlayer() == 'W') {
+							System.out.println("\n\n\n\n\n\n");
+							br.readLine();
+						}
+					}
 
 				} while (result == '?');
 

@@ -25,8 +25,8 @@ public class NegamaxPlayer implements IPlayer {
 
 		try {
 			for (Move move : possibleMoveList) {
-				tempWeight = -recursiveMoves(board, move, maxDepth);
-				System.out.print(tempWeight + " ");
+				tempWeight = recursiveMoves(board, move, maxDepth);
+//				System.out.print(tempWeight + " ");
 				
 				if (tempWeight > weight) {
 					weightedMoveList.clear();
@@ -56,8 +56,8 @@ public class NegamaxPlayer implements IPlayer {
 		
 		//If the game is finished, return the win/lose-score --or-- max depth is reached 
 		if('?' != gameStatus || depth <= 0) {
-			int tempret = ctrl.getBoardScore(tempBoard);
-			return -tempret;
+			int tempret = -ctrl.getBoardScore(tempBoard);
+			return tempret;
 		}
 
 		//alle möglichen moves des nächsten spielers holen
@@ -72,7 +72,7 @@ public class NegamaxPlayer implements IPlayer {
 		int tempScore;
 		//for every possible move call recusiveMoves <-- recursion :D
 		for (Move nextMove : moveList) {
-			tempScore = recursiveMoves(tempBoard, nextMove, depth);
+			tempScore = -recursiveMoves(tempBoard, nextMove, depth);
 
 			//save smallest score
 			if(tempScore < result) {
@@ -81,6 +81,6 @@ public class NegamaxPlayer implements IPlayer {
 		}
 
 		//Negate result, cause the player changes
-		return -result;
+		return result;
 	}
 }

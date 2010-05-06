@@ -9,6 +9,29 @@ import org.junit.Test;
 
 
 public class ControllerTests {
+	
+	@Test
+	public void testScoring() {
+		Controller ctrl = new Controller();
+		Board board = null;
+		ArrayList<Move> moveList = new ArrayList<Move>();
+		
+		try {
+			board = new Board("1 B\n"
+			        +"k....\n"
+			        +".....\n"
+			        +".....\n"
+			        +".....\n"
+			        +".....\n"
+			        +"...PK\n");
+			int score = ctrl.getBoardScore(board);
+			assertEquals("Wrong score", -1, score);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 
 	@Test
 	public void testCtrlCollectAllMoves(){

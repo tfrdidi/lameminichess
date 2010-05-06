@@ -208,9 +208,9 @@ public class Controller {
 			break;
 		case 'p':
 			result = 1;
-			if(board.getCurrentPlayer() == 'W' && sq.getRow() > 2) {
+			if(board.getCurrentPlayer() == 'W' && sq.getRow() > 2 && piece == 'P') {
 				result += sq.getRow();
-			} else if (board.getCurrentPlayer() == 'B' && sq.getRow() < 3) {
+			} else if (board.getCurrentPlayer() == 'B' && sq.getRow() < 3 && piece == 'p') {
 				result += (5-sq.getRow());
 			}
 			break;
@@ -222,7 +222,7 @@ public class Controller {
 		
 	}
 	
-	protected int getBoardScore(Board board, int param) throws Exception {
+	public int getBoardScore(Board board, int param) throws Exception {
 		int result = 0;
 	
 		for (Square sq : board.getSquares(param)) {
@@ -232,7 +232,7 @@ public class Controller {
 		return result;
 	}
 	
-	protected int getBoardScore(Board board) throws Exception {
+	public int getBoardScore(Board board) throws Exception {
 		return getBoardScore(board, Square.MATE)-getBoardScore(board, Square.OPPONENT);
 	}
 }
