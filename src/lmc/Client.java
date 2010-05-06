@@ -1,6 +1,6 @@
 package lmc;
 
-// Copyright Â© 2010 Bart Massey <bart@cs.pdx.edu>
+// Copyright © 2010 Bart Massey <bart@cs.pdx.edu>
 // Licensed under the "MIT License"
 // Please see the file COPYING in this distribution
 

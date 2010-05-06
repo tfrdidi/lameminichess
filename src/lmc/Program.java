@@ -41,7 +41,7 @@ public class Program {
 //"....K");
 				Controller ctrl = new Controller();
 				IPlayer blackPlayer = new NegamaxPlayer(2);
-				IPlayer whitePlayer = new AlphaBetaNegamaxPlayer(3);
+				IPlayer whitePlayer = new AlphaBetaNegamaxPlayer(3, 500);
 				IPlayer currentPlayer = null;
 				char result = '?';
 				Move currentMove = null;

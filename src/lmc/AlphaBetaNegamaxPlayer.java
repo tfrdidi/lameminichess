@@ -13,7 +13,8 @@ public class AlphaBetaNegamaxPlayer implements IPlayer {
 	static Random rnd = new Random();
 	Controller ctrl = new Controller();
 	
-	public AlphaBetaNegamaxPlayer(int checkBranches) {
+	public AlphaBetaNegamaxPlayer(int checkBranches, long timePerRound) {
+		this.startTime = timePerRound;
 		this.maxDepth = 40;
 		this.checkBranches = checkBranches;
 	}
@@ -29,7 +30,7 @@ public class AlphaBetaNegamaxPlayer implements IPlayer {
 
 		try {
 			//TODO 5000 dynamisch berechnen (5000 = Wieviel Zeit läuft das Spiel schon)
-			long maxTimePerMove = 500/possibleMoveList.size();
+			long maxTimePerMove = startTime/possibleMoveList.size();
 //			startTime = System.currentTimeMillis();
 			for (Move move : possibleMoveList) {
 				//You have 5 sec to play recursive...

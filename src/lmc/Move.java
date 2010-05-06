@@ -39,7 +39,6 @@ public class Move implements Comparable<Move>{
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return from + "-" + to;
 	}
 	
