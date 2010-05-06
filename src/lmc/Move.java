@@ -3,8 +3,9 @@
  */
 package lmc;
 
-public class Move {
+public class Move implements Comparable<Move>{
 	
+	public int score;
 	Square from;
 	public Square getFrom() {
 		return from;
@@ -46,5 +47,10 @@ public class Move {
 	public boolean equals(Object obj) {
 		Move other = (Move) obj;
 		return other.toString().equals(this.toString());
+	}
+
+	@Override
+	public int compareTo(Move move) {
+		return move.score - score;
 	}
 }

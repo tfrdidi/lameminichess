@@ -17,9 +17,9 @@ public class Program {
 	public static void main(String[] args) {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		boolean showIngameInfo = true;
+		boolean showIngameInfo = false;
 		boolean stopAfterEachTurn = false;
-		int battles = 10;
+		int battles = 5;
 		long now = System.currentTimeMillis();
 		int countWinWhite = 0;
 		int countWinBlack = 0;
@@ -28,6 +28,8 @@ public class Program {
 		
 		for (int i = 0; i < battles; i++) {
 			try {
+				if(battles > 0)
+					System.out.println("Battle #" + (i+1) + " started...");
 				Board b = new Board();
 //				Board b = new Board(
 //"1 B\n"+
@@ -38,8 +40,8 @@ public class Program {
 //".....\n"+
 //"....K");
 				Controller ctrl = new Controller();
-				IPlayer blackPlayer = new NegamaxPlayer(3);
-				IPlayer whitePlayer = new NegamaxPlayer(3);
+				IPlayer blackPlayer = new NegamaxPlayer(2);
+				IPlayer whitePlayer = new AlphaBetaNegamaxPlayer(3);
 				IPlayer currentPlayer = null;
 				char result = '?';
 				Move currentMove = null;
@@ -60,11 +62,12 @@ public class Program {
 						currentPlayer = blackPlayer;
 					}
 
+					long startTime = System.currentTimeMillis();
 					currentMove = currentPlayer
 							.getNextMove(b, possibleMoveList);
 					if (currentMove != null && showIngameInfo)
-						System.out.println(b.getCurrentPlayer() + " moved " + currentMove);
-
+						System.out.println(b.getCurrentPlayer() + " moved " + currentMove + " in ms: " + (System.currentTimeMillis() - startTime));
+					
 					result = ctrl.move(b, currentMove);
 					
 					if(stopAfterEachTurn) {

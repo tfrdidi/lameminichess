@@ -26,7 +26,6 @@ public class NegamaxPlayer implements IPlayer {
 		try {
 			for (Move move : possibleMoveList) {
 				tempWeight = recursiveMoves(board, move, maxDepth);
-//				System.out.print(tempWeight + " ");
 				
 				if (tempWeight > weight) {
 					weightedMoveList.clear();
