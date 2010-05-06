@@ -32,7 +32,7 @@ public class Program {
 ".....\n"+
 ".....");
 				Controller ctrl = new Controller();
-				IPlayer blackPlayer = new NegamaxPlayer(2);
+				IPlayer blackPlayer = new NegamaxPlayer(4);
 				IPlayer whitePlayer = new NotSoDrunkenPlayer();
 				IPlayer currentPlayer = null;
 				char result = '?';

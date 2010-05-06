@@ -19,7 +19,7 @@ public class NegamaxPlayer implements IPlayer {
 		if (possibleMoveList.size() == 0) return null;
 		
 		Move ret = null;
-		int weight = Integer.MAX_VALUE;
+		int weight = Integer.MIN_VALUE;
 		int tempWeight;
 		ArrayList<Move> weightedMoveList = new ArrayList<Move>();
 
@@ -28,7 +28,7 @@ public class NegamaxPlayer implements IPlayer {
 				tempWeight = -recursiveMoves(board, move, maxDepth);
 				System.out.print(tempWeight + " ");
 				
-				if (tempWeight < weight) {
+				if (tempWeight > weight) {
 					weightedMoveList.clear();
 					weightedMoveList.add(move);
 					weight = tempWeight;
@@ -43,8 +43,6 @@ public class NegamaxPlayer implements IPlayer {
 		
 		int chosenIndex = rnd.nextInt(weightedMoveList.size());
 		ret = weightedMoveList.get(chosenIndex);
-		weightedMoveList.clear();
-		tempWeight = 0;
 		return ret;
 	}
 
