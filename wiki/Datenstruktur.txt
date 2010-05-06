@@ -17,11 +17,11 @@ extern:
 
 intern:
 
-5	k q b n r
+5	k q b n r (black)
 4	p p p p p
 3	. . . . .
 2	. . . . .
 1	P P P P P
-0	R N B Q K
+0	R N B Q K (white)
 
 	0 1 2 3 4

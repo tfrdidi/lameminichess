@@ -23,17 +23,24 @@ public class Program {
 		
 		for (int i = 0; i < battles; i++) {
 			try {
-				Board b = new Board();
+				Board b = new Board(
+"1 B\n"+
+"k.K..\n"+
+".....\n"+
+".....\n"+
+".....\n"+
+".....\n"+
+".....");
 				Controller ctrl = new Controller();
+				IPlayer blackPlayer = new NegamaxPlayer(2);
 				IPlayer whitePlayer = new NotSoDrunkenPlayer();
-				IPlayer blackPlayer = new DrunkenPlayer();
 				IPlayer currentPlayer = null;
 				char result = '?';
 				Move currentMove = null;
 				ArrayList<Move> possibleMoveList = null;
 
 				if(showIngameInfo)
-					System.out.println("Let´s start the battle!!! Kill each others king!!!!");
+					System.out.println("Let's start the battle!!! Kill each others king!!!!");
 
 				do {
 					if(showIngameInfo)
@@ -86,13 +93,13 @@ public class Program {
 		double avgRunCount = (double) turns / battles;
 		
 		System.out.println("\n----Stats---");
-		System.out.println("Battles: " + battles);
-		System.out.println("Duration: " + duration + "ms");
-		System.out.println("avgDuration: " + avgDuration + "ms");
-		System.out.println("avgRunCount: " + avgRunCount);
-		System.out.println("countWinWhite: " + countWinWhite);
-		System.out.println("countWinBlack: " + countWinBlack);
-		System.out.println("countDraw: " + countDraw);
+		System.out.println("Battles:\t" + battles);
+		System.out.println("Duration:\t" + duration + "ms");
+		System.out.println("avgDuration:\t" + avgDuration + "ms");
+		System.out.println("avgRunCount:\t" + avgRunCount);
+		System.out.println("countWinBlack:\t" + countWinBlack + "\t" + ((double)countWinBlack/battles)*100 + "%");
+		System.out.println("countWinWhite:\t" + countWinWhite + "\t" + ((double)countWinWhite/battles)*100 + "%");
+		System.out.println("countDraw:\t" + countDraw + "\t" + ((double)countDraw/battles)*100 + "%");
 	}
 
 }

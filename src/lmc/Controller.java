@@ -208,6 +208,11 @@ public class Controller {
 			break;
 		case 'p':
 			result = 1;
+			if(board.getCurrentPlayer() == 'W' && sq.getRow() > 2) {
+				result += sq.getRow();
+			} else if (board.getCurrentPlayer() == 'B' && sq.getRow() < 3) {
+				result += (5-sq.getRow());
+			}
 			break;
 		default: //case '.'
 			break;
