@@ -44,5 +44,11 @@ public class NotSoDrunkenPlayer implements IPlayer {
 		return ret;
 	}
 
+	@Override
+	public void sendOpponentsMove(Move m) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

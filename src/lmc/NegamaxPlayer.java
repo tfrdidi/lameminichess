@@ -82,4 +82,10 @@ public class NegamaxPlayer implements IPlayer {
 		//Negate result, cause the player changes
 		return result;
 	}
+
+	@Override
+	public void sendOpponentsMove(Move m) {
+		// TODO Auto-generated method stub
+		
+	}
 }

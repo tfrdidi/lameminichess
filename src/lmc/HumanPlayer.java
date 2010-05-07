@@ -34,4 +34,10 @@ public class HumanPlayer implements IPlayer {
 		return move;
 	}
 
+	@Override
+	public void sendOpponentsMove(Move m) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

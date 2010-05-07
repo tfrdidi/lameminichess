@@ -1,6 +1,6 @@
 package lmc;
 
-// Copyright © 2010 Bart Massey <bart@cs.pdx.edu>
+// Copyright Â© 2010 Bart Massey <bart@cs.pdx.edu>
 // Licensed under the "MIT License"
 // Please see the file COPYING in this distribution
 
@@ -11,13 +11,13 @@ public class Client {
     BufferedReader in;
     PrintStream out;
 
-    public String expect(String code, boolean verbose) 
+    public String expectResponse(boolean verbose) 
       throws IOException {
 	String response;
 	while(true) {
 	    response = in.readLine();
 	    if (response == null)
-		throw new IOException("expect: EOF");
+		throw new IOException("expectResponse: EOF");
 	    if (verbose)
 		System.out.println(response);
 	    if (response.length() < 3)
@@ -28,10 +28,22 @@ public class Client {
 		    break;
 	    if (i < 3)
 		continue;
-	    if (code.equals(response.substring(0, 3)))
-		return response.substring(4);
-	    throw new IOException("expect: unexpected response");
+	    return response;
 	}
+    }
+
+    public static String responseCode(String s) {
+	return s.substring(0, 3);
+    }
+
+    public static String responseString(String s) {
+	return s.substring(4);
+    }
+
+    public String expect(String code, boolean verbose) 
+      throws IOException {
+	String response = expectResponse(verbose);
+	return responseString(response);
     }
 
     public void send(String s, boolean verbose) {
@@ -48,14 +60,14 @@ public class Client {
 	    new InputStreamReader(s.getInputStream());
 	in = new BufferedReader(isr);
 	out = new PrintStream(s.getOutputStream(), true);
-	String version = expect("100", false);
-	if (!"imcs 2.3".equals(version))
+	String version = expectResponse(false);
+	if (!"imcs 2.4".equals(responseString(version)))
 	    throw new Error("client: imcs version mismatch");
 	send("me " + username + " " + password, true);
 	expect("201", true);
     }
 
-    String getMove()
+    public String getMove()
       throws IOException {
 	String line;
 	char ch;
@@ -75,7 +87,7 @@ public class Client {
 	return line.substring(2);
     }
 
-    void sendMove(String m) 
+    public void sendMove(String m) 
       throws IOException {
 	String line;
 	do {
@@ -88,23 +100,37 @@ public class Client {
 	out.println(m);
     }
 
-    public void offer(char color) 
+    public char offer(char color) 
       throws IOException {
 	if (color == '?')
 	    send("offer", true);
 	else
 	    send("offer " + color, true);
-	expect("101", true);
+	String code = responseCode(expectResponse(true));
+	if (code.equals("107"))
+	    color = 'W';
+	else if (code.equals("108"))
+	    color = 'B';
+	else if (!code.equals("101"))
+	    throw new IOException("offer: unknown response code");
 	expect("102", true);
+	return color;
     }
 
-    public void accept(String id, char color)
+    public char accept(String id, char color)
       throws IOException {
 	if (color == '?')
 	    send("accept " + id, true);
 	else
 	    send("accept " + id + " " + color, true);
-	expect("103", true);
+	String code = responseCode(expectResponse(true));
+	if (code.equals("101"))
+	    return '?';
+	if (code.equals("105"))
+	    return 'W';
+	if (code.equals("106"))
+	    return 'B';
+	throw new IOException("accept: unknown response code");
     }
 
     public void close() 

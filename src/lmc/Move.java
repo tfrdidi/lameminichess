@@ -5,7 +5,7 @@ package lmc;
 
 public class Move implements Comparable<Move>{
 	
-	public int score;
+	public double score;
 	Square from;
 	public Square getFrom() {
 		return from;
@@ -50,6 +50,11 @@ public class Move implements Comparable<Move>{
 
 	@Override
 	public int compareTo(Move move) {
-		return move.score - score;
+		if (move.score - score < 0) {
+			return -1;
+		} else if (move.score - score > 0) {
+			return 1;
+		} else
+		return 0;
 	}
 }

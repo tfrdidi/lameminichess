@@ -7,56 +7,65 @@ import java.util.Random;
 public class AlphaBetaNegamaxPlayer implements IPlayer {
 
 	char myplayer;
-	int maxDepth;
 	int checkBranches;
-	long startTime;
+	long timePerRound;
+	double timeUsed = 0;
+	double timeStamp = 0;
+	double globalStartTime;
 	static Random rnd = new Random();
 	Controller ctrl = new Controller();
 	
 	public AlphaBetaNegamaxPlayer(int checkBranches, long timePerRound) {
-		this.startTime = timePerRound;
-		this.maxDepth = 40;
+		this.timePerRound = timePerRound;
 		this.checkBranches = checkBranches;
 	}
 
 	@Override
 	public Move getNextMove(Board board, ArrayList<Move> possibleMoveList) {
+		timeStamp = System.currentTimeMillis();
+		globalStartTime = timeStamp;
+		
 		if (possibleMoveList.size() == 0) return null;
 		
 		Move ret = null;
-		int weight = Integer.MIN_VALUE;
-		int tempWeight;
+		double weight = -100000;
 		ArrayList<Move> weightedMoveList = new ArrayList<Move>();
 
 		try {
-			//TODO 5000 dynamisch berechnen (5000 = Wieviel Zeit läuft das Spiel schon)
-			long maxTimePerMove = startTime/possibleMoveList.size();
-//			startTime = System.currentTimeMillis();
+			double maxTimePerMove = timePerRound/possibleMoveList.size();
 			for (Move move : possibleMoveList) {
-				//You have 5 sec to play recursive...
-				tempWeight = recursiveMoves(board, move, maxTimePerMove, System.currentTimeMillis());
-//				System.out.print(tempWeight + " ");
+				//TODO statt weight lieber Move.score verwenden
+				//TODO nach einem zug wird nicht der maximal mögliche wert für den gegner berechnet!!!
+				//TODO bewegungen des königs sind schlecht zu bewerten
+				//TODO einheiten der letzten Reihe, die sich nicht bewegen sind auch schlecht zu bewerten!!!
+				move.score = recursiveMoves(board, move, maxTimePerMove, System.currentTimeMillis());
 				
-				if (tempWeight > weight) {
+				System.out.println("move " + move.toString() + ", bewertung: " + move.score);
+				
+				if (move.score > weight) {
 					weightedMoveList.clear();
 					weightedMoveList.add(move);
-					weight = tempWeight;
-				} else if (tempWeight == weight) {
+					weight = move.score;
+				} else if (move.score == weight) {
 					weightedMoveList.add(move);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println(e);
+			
 			return null;
 		}
 		
 		int chosenIndex = rnd.nextInt(weightedMoveList.size());
 		ret = weightedMoveList.get(chosenIndex);
+		timeUsed = 0;
+		
 		return ret;
 	}
 
-	private int recursiveMoves(Board board, Move move, double maxTimePerMove, long startTime) throws Exception {
-		int result = Integer.MAX_VALUE;
+	private double recursiveMoves(Board board, Move move, double maxTimePerMove, long startTime) throws Exception {
+		double result = 10000;
 		
 		Board tempBoard = (Board) board.clone();
 		
@@ -65,6 +74,11 @@ public class AlphaBetaNegamaxPlayer implements IPlayer {
 		//If the game is finished, return the win/lose-score --or-- max depth is reached 
 		if('?' != gameStatus) {
 			int tempret = -ctrl.getBoardScore(tempBoard);
+			
+			//counts the time, refreshes the timestamp
+			timeUsed -= timeStamp;
+			timeStamp = System.currentTimeMillis();
+			timeUsed += timeStamp;
 			return tempret;
 		}
 
@@ -95,17 +109,19 @@ public class AlphaBetaNegamaxPlayer implements IPlayer {
 			return 0;
 		}
 		
-		int tempScore;
+		double tempScore;
 		
 		//Have I time to play recursive?
 		long currTime = System.currentTimeMillis();
-		if (startTime + maxTimePerMove > currTime) {
+		if ((startTime + maxTimePerMove > globalStartTime + timeUsed)) {
 			maxTimePerMove = maxTimePerMove/tempCheckBranches;
 //			System.out.println(maxTimePerMove);
 			//for every possible move call recusiveMoves <-- recursion :D
 			for (int i = 0; i < tempCheckBranches; i++) {
 				tempScore = -recursiveMoves(tempBoard, moveList.get(i), maxTimePerMove, currTime);
-	
+				//moves deep in future are less worth
+				tempScore *= 0.6;
+				
 				//save smallest score
 				if(tempScore < result) {
 					result = tempScore;
@@ -115,6 +131,11 @@ public class AlphaBetaNegamaxPlayer implements IPlayer {
 			}
 		} else {
 			int tempret = -ctrl.getBoardScore(tempBoard);
+			
+			timeUsed -= timeStamp;
+			timeStamp = System.currentTimeMillis();
+			timeUsed += timeStamp;
+
 			return tempret;
 		}
 
@@ -128,5 +149,11 @@ public class AlphaBetaNegamaxPlayer implements IPlayer {
 		ctrl.move(tempBoard, move);
 		
 		return -ctrl.getBoardScore(tempBoard);
+	}
+
+	@Override
+	public void sendOpponentsMove(Move m) {
+		// TODO Auto-generated method stub
+		
 	}
 }

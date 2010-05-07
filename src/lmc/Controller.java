@@ -193,6 +193,13 @@ public class Controller {
 		switch (Character.toLowerCase(piece)) {
 		case 'k':
 			result = 1000;
+			if(board.getRunCount() < 10) {
+				if(board.getCurrentPlayer() == 'W' && sq.getRow() == 0 && sq.getColumn() == 4 && piece == 'K') {
+					result += 10;
+				} else if (board.getCurrentPlayer() == 'B' && sq.getRow() == 5 && sq.getColumn() == 0 && piece == 'k') {
+					result += 10;
+				}
+			}
 			break;
 		case 'q':
 			result = 10;
@@ -208,10 +215,10 @@ public class Controller {
 			break;
 		case 'p':
 			result = 1;
-			if(board.getCurrentPlayer() == 'W' && sq.getRow() > 2 && piece == 'P') {
-				result += sq.getRow();
-			} else if (board.getCurrentPlayer() == 'B' && sq.getRow() < 3 && piece == 'p') {
-				result += (5-sq.getRow());
+			if(board.getCurrentPlayer() == 'W' && sq.getRow() == 4 && piece == 'P') {
+				result += 3;
+			} else if (board.getCurrentPlayer() == 'B' && sq.getRow() == 1 && piece == 'p') {
+				result += 3;
 			}
 			break;
 		default: //case '.'
