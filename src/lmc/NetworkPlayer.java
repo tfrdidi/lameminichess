@@ -1,3 +1,6 @@
+/*
+ * Copyright © 2010 Stefan Liebler, Clemens Henker, Lukas Hahmann. All rights reserved.
+ */
 package lmc;
 
 import java.io.IOException;
@@ -21,7 +24,9 @@ public class NetworkPlayer implements IPlayer {
 
 		Move m;
 		try {
-			m = new Move(c.getMove());
+			String input = c.getMove();
+			if (input == null) return null;
+			m = new Move(input);
 			return m;
 		} catch (Exception e) {
 			

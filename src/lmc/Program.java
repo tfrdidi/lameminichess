@@ -39,8 +39,10 @@ public class Program {
 //"PPPP.\n"+
 //"RNBQK");
 				Controller ctrl = new Controller();
-				IPlayer blackPlayer = new NegamaxPlayer(4);
-				IPlayer whitePlayer = new AlphaBetaNegamaxPlayer(4, 6000);
+				IPlayer blackPlayer = new NetworkPlayer();
+				IPlayer whitePlayer = new AlphaBetaNegamaxPlayer(4,7000);
+				//IPlayer blackPlayer = new NegamaxPlayer(4);
+				//IPlayer whitePlayer = new AlphaBetaNegamaxPlayer(4, 6000);
 				IPlayer currentPlayer = null;
 				IPlayer opponentPlayer = null;
 				char result = '?';

@@ -1,3 +1,6 @@
+/*
+ * Copyright © 2010 Stefan Liebler, Clemens Henker, Lukas Hahmann. All rights reserved.
+ */
 package lmc;
 
 import java.util.ArrayList;
@@ -9,6 +12,7 @@ public class AlphaBetaNegamaxPlayer implements IPlayer {
 	char myplayer;
 	int checkBranches;
 	long timePerRound;
+	boolean showDebug = false;
 	double timeUsed = 0;
 	double timeStamp = 0;
 	double globalStartTime;
@@ -18,6 +22,12 @@ public class AlphaBetaNegamaxPlayer implements IPlayer {
 	public AlphaBetaNegamaxPlayer(int checkBranches, long timePerRound) {
 		this.timePerRound = timePerRound;
 		this.checkBranches = checkBranches;
+	}
+
+	public AlphaBetaNegamaxPlayer(int checkBranches, long timePerRound, boolean showDebug) {
+		this.timePerRound = timePerRound;
+		this.checkBranches = checkBranches;
+		this.showDebug = showDebug;
 	}
 
 	@Override
@@ -40,8 +50,10 @@ public class AlphaBetaNegamaxPlayer implements IPlayer {
 				//TODO einheiten der letzten Reihe, die sich nicht bewegen sind auch schlecht zu bewerten!!!
 				move.score = recursiveMoves(board, move, maxTimePerMove, System.currentTimeMillis());
 				
-				System.out.println("move " + move.toString() + ", bewertung: " + move.score);
-				
+				if(showDebug) {
+					System.out.println("move " + move.toString() + ", bewertung: " + move.score);
+				}
+					
 				if (move.score > weight) {
 					weightedMoveList.clear();
 					weightedMoveList.add(move);
